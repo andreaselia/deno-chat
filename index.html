@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Deno Chat</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script type="module">
+      import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js'
+
+      new Vue({
+        el: '#app',
+        data () {
+          return {
+            ws: null,
+            messages: [],
+            message: '',
+          }
+        },
+        template: `<div>
+          <div v-for="(message, index) in messages" :key="index">
+            {{ message }}
+          </div>
+
+          <form @submit.prevent="submit">
+           <input type="text" v-model="message" placeholder="Message">
+           <input type="submit" value="Send">
+          </form>
+        </div>`,
+        created () {
+          if (this.ws) this.ws.close()
+          this.ws = new WebSocket(`ws://${window.location.host}/ws`)
+          this.ws.addEventListener('message', ({ data }) => {
+            this.messages = [...this.messages, data]
+          })
+        },
+        methods: {
+          submit (e) {
+            this.ws.send(this.message)
+            this.message = ''
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
