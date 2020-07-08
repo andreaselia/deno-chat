@@ -2,32 +2,35 @@ import { listenAndServe } from "https://deno.land/std/http/server.ts";
 import {
   acceptWebSocket,
   acceptable,
-  WebSocket,
   isWebSocketCloseEvent,
 } from "https://deno.land/std/ws/mod.ts";
 
-const users = new Map<number, WebSocket>();
+const users = new Map();
 let userId = 0;
 
-function broadcast(message: string): void {
+function broadcast(message) {
   for (const user of users.values()) {
     user.send(message);
   }
 }
 
-async function handleWs(ws: WebSocket): Promise<void> {
+async function handleWs(ws) {
   const id = ++userId;
   users.set(id, ws);
   broadcast(`[${id}] has connected`);
 
-  for await (const msg of ws) {
-    if (typeof msg === "string" && !(!msg)) {
-      broadcast(`[${id}]: ${msg}`);
-    } else if (isWebSocketCloseEvent(msg)) {
-      users.delete(id);
-      broadcast(`[${id}] has disconnected`);
-      break;
+  try {
+    for await (const msg of ws) {
+      if (typeof msg === "string" && !(!msg)) {
+        broadcast(`[${id}]: ${msg}`);
+      } else if (isWebSocketCloseEvent(msg)) {
+        users.delete(id);
+        broadcast(`[${id}] has disconnected`);
+        break;
+      }
     }
+  } catch (err) {
+    throw err;
   }
 }
 
