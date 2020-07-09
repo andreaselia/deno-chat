@@ -31,7 +31,7 @@ async function handleWs(ws: WebSocket): Promise<void> {
   }
 }
 
-listenAndServe({ port: 3080 }, async (req) => {
+listenAndServe({ port: 8000 }, async (req) => {
   if (req.method === "GET" && req.url === "/") {
     req.respond({
       status: 200,
@@ -54,4 +54,4 @@ listenAndServe({ port: 3080 }, async (req) => {
   }
 });
 
-console.log("Chat server running: http://localhost:3080");
+console.log("Chat server running: http://localhost:8000");
