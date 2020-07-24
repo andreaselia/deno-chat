@@ -1,6 +1,6 @@
 # Deno Chat with Vue.js
 
-A simple chat built using Deno and Vue.js. I have also included a JavaScript version alongside the TypeScript version of the server within the repository.
+A simple chat built using Deno and Vue.js.
 
 ## Getting Started
 

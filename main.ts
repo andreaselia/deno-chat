@@ -1,32 +1,83 @@
 import { listenAndServe } from "https://deno.land/std/http/server.ts";
-import {
-  acceptWebSocket,
-  acceptable,
-  WebSocket,
-  isWebSocketCloseEvent,
-} from "https://deno.land/std/ws/mod.ts";
+import { acceptWebSocket, acceptable, WebSocket, isWebSocketCloseEvent } from "https://deno.land/std/ws/mod.ts";
+import { v4 } from "https://deno.land/std/uuid/mod.ts";
 
-const users = new Map<number, WebSocket>();
-let userId = 0;
+const users = new Map();
+const channels = new Map();
 
-function broadcast(message: string): void {
-  for (const user of users.values()) {
-    user.send(message);
+function broadcast(data: any) {
+  console.log('data', data)
+
+  const channel = channels.get(data.channel);
+
+  for (const user of channel) {
+    user.ws.send(JSON.stringify(data));
   }
 }
 
 async function handleWs(ws: WebSocket): Promise<void> {
-  const id = ++userId;
-  users.set(id, ws);
-  broadcast(`[${id}] has connected`);
+  const userId = v4.generate();
+  const userObj = {
+    userId,
+    name: 'User',
+    channel: 'general',
+    ws
+  };
 
-  for await (const msg of ws) {
-    if (typeof msg === "string" && !(!msg)) {
-      broadcast(`[${id}]: ${msg}`);
-    } else if (isWebSocketCloseEvent(msg)) {
-      users.delete(id);
-      broadcast(`[${id}] has disconnected`);
+  users.set(userId, userObj);
+
+  const channelUsers = channels.get('general') || [];
+  channelUsers.push(userObj);
+  channels.set('general', channelUsers)
+
+  broadcast({
+    event: 'message',
+    channel: 'general',
+    message: 'User has connected'
+  });
+
+  for await (const data of ws) {
+    const event = typeof data === "string" ? JSON.parse(data) : data;
+
+    if (isWebSocketCloseEvent(data)) {
+      users.delete(userId);
+
+      broadcast({
+        event: 'message',
+        channel: 'general',
+        message: 'User has disconnected'
+      });
+
       break;
+    }
+
+    switch (event.event) {
+      case "message":
+        if (event.message) {
+          broadcast({
+            event: 'message',
+            channel: 'general',
+            message: `User: ${event.message}`
+          });
+        }
+        break;
+      case "changeChannel":
+        if (!userObj) {
+          return;
+        }
+
+        let users = channels.get(userObj.channel);
+
+        users = users.filter((user) => user.userId !== userId);
+        channels.set(userObj.channel, users);
+
+        users.delete(userId);
+
+        broadcast({
+          event: 'channelChange',
+          channel: event.channel
+        });
+        break;
     }
   }
 }
