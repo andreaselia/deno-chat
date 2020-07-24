@@ -25,7 +25,7 @@
           <div class="bg-white shadow sm:rounded-lg">
             <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
-                  Deno Chat
+                  Deno Chat (General)
               </h3>
             </div>
             <div class="px-4 py-5 sm:p-6">
@@ -34,6 +34,7 @@
                   <p>{{ message }}</p>
                 </div>
               </div>
+
               <div class="mt-5">
                 <form @submit.prevent="submit" class="flex justify-between items-center">
                   <div class="relative rounded-md shadow-sm flex-grow">
@@ -46,27 +47,27 @@
                     </button>
                   </span>
                 </form>
-
-                <div class="px-4 py-5 border-t border-gray-200 sm:px-6">
-                  <nav class="flex justify-between items-center space-x-2">
-                    <a href="/general" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-900 rounded-md bg-gray-100 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150" aria-current="page">
-                      General
-                    </a>
-                    <a href="/random" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
-                      Random
-                    </a>
-                    <a href="/deno" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
-                      Deno
-                    </a>
-                    <a href="/typescript" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
-                      TypeScript
-                    </a>
-                    <a href="/javascript" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
-                      JavaScript
-                    </a>
-                  </nav>
-                </div>
               </div>
+            </div>
+
+            <div class="px-4 py-5 border-t border-gray-200 sm:px-6">
+              <nav class="flex justify-between items-center space-x-2">
+                <a href="/general" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-900 rounded-md bg-gray-100 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150" aria-current="page">
+                  General
+                </a>
+                <a href="/random" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
+                  Random
+                </a>
+                <a href="/deno" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
+                  Deno
+                </a>
+                <a href="/typescript" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
+                  TypeScript
+                </a>
+                <a href="/javascript" class="px-3 py-2 flex-grow text-center text-sm leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150">
+                  JavaScript
+                </a>
+              </nav>
             </div>
           </div>
         </div>`,
