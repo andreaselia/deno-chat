@@ -1,8 +1,11 @@
 version: '3'
 
 services:
-  web:
-    build: .
-    container_name: app
+  deno:
+    image: hayd/deno:latest
     ports:
-      - "8000:8000"
+      - 8000:8000
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: ["run", "--allow-net", "--allow-read", "main.ts"]
