@@ -9,6 +9,10 @@ function broadcast(data: any) {
   const channel = channels.get(data.channel) || [];
 
   for (const user of channel) {
+    if (user.ws.isClosed) {
+      break
+    }
+
     user.ws.send(JSON.stringify(data));
   }
 }
