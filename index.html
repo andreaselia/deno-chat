@@ -94,6 +94,9 @@
               case 'message':
                 this.messages = [...this.messages, event.message]
                 break
+              case 'channelChange':
+                this.currentChannel = event.channel
+                break
             }
           })
         },
@@ -111,9 +114,10 @@
           changeChannel (channel) {
             this.ws.send(JSON.stringify({
               event: 'changeChannel',
-              channel: this.currentChannel
+              channel: channel
             }))
 
+            this.messages = []
             this.currentChannel = channel
           }
         }

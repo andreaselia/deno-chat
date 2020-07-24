@@ -6,9 +6,7 @@ const users = new Map();
 const channels = new Map();
 
 function broadcast(data: any) {
-  console.log('data', data)
-
-  const channel = channels.get(data.channel);
+  const channel = channels.get(data.channel) || [];
 
   for (const user of channel) {
     user.ws.send(JSON.stringify(data));
@@ -44,7 +42,7 @@ async function handleWs(ws: WebSocket): Promise<void> {
 
       broadcast({
         event: 'message',
-        channel: 'general',
+        channel: userObj.channel,
         message: 'User has disconnected'
       });
 
@@ -56,22 +54,37 @@ async function handleWs(ws: WebSocket): Promise<void> {
         if (event.message) {
           broadcast({
             event: 'message',
-            channel: 'general',
+            channel: userObj.channel,
             message: `User: ${event.message}`
           });
         }
         break;
       case "changeChannel":
-        if (!userObj) {
-          return;
-        }
+        broadcast({
+          event: 'message',
+          channel: event.channel,
+          message: 'User has connected'
+        });
 
-        let users = channels.get(userObj.channel);
+        let channelUsers = channels.get(userObj.channel) || [];
+        channelUsers = channelUsers.filter((user: any) => user.userId !== userId);
+        channels.set(userObj.channel, channelUsers);
 
-        users = users.filter((user) => user.userId !== userId);
-        channels.set(userObj.channel, users);
+        const newChannelUsers = channels.get(event.channel) || [];
+        newChannelUsers.push(userObj);
+        channels.set(event.channel, newChannelUsers);
 
         users.delete(userId);
+
+        broadcast({
+          event: 'message',
+          channel: userObj.channel,
+          message: 'User has disconnected'
+        });
+
+        userObj.channel = event.channel;
+
+        users.set(userId, userObj);
 
         broadcast({
           event: 'channelChange',
