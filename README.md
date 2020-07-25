@@ -2,6 +2,8 @@
 
 A chatroom built using Deno and Vue.js with multiroom support.
 
+![Screenshot Preview](https://raw.githubusercontent.com/AndreasElia/deno-chat/master/image.png)
+
 ## Getting Started
 
 Setup the repository:
