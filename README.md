@@ -1,6 +1,6 @@
 # Deno Chat with Vue.js
 
-A simple chat built using Deno and Vue.js.
+A chatroom built using Deno and Vue.js with multiroom support.
 
 ## Getting Started
 
