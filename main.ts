@@ -1,5 +1,10 @@
 import { listenAndServe } from "https://deno.land/std/http/server.ts";
-import { acceptWebSocket, acceptable, WebSocket, isWebSocketCloseEvent } from "https://deno.land/std/ws/mod.ts";
+import {
+  acceptWebSocket,
+  acceptable,
+  WebSocket,
+  isWebSocketCloseEvent,
+} from "https://deno.land/std/ws/mod.ts";
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
 
 const users = new Map();
@@ -10,7 +15,7 @@ function broadcast(data: any) {
 
   for (const user of channel) {
     if (user.ws.isClosed) {
-      break
+      break;
     }
 
     user.ws.send(JSON.stringify(data));
@@ -21,21 +26,21 @@ async function handleWs(ws: WebSocket): Promise<void> {
   const userId = v4.generate();
   const userObj = {
     userId,
-    name: 'User',
-    channel: 'general',
-    ws
+    name: "User",
+    channel: "general",
+    ws,
   };
 
   users.set(userId, userObj);
 
-  const channelUsers = channels.get('general') || [];
+  const channelUsers = channels.get("general") || [];
   channelUsers.push(userObj);
-  channels.set('general', channelUsers)
+  channels.set("general", channelUsers);
 
   broadcast({
-    event: 'message',
-    channel: 'general',
-    message: 'User has connected'
+    event: "message",
+    channel: "general",
+    message: "User has connected",
   });
 
   for await (const data of ws) {
@@ -45,9 +50,9 @@ async function handleWs(ws: WebSocket): Promise<void> {
       users.delete(userId);
 
       broadcast({
-        event: 'message',
+        event: "message",
         channel: userObj.channel,
-        message: 'User has disconnected'
+        message: "User has disconnected",
       });
 
       break;
@@ -56,16 +61,16 @@ async function handleWs(ws: WebSocket): Promise<void> {
     if (event.event === "message") {
       if (event.message) {
         broadcast({
-          event: 'message',
+          event: "message",
           channel: userObj.channel,
-          message: `User: ${event.message}`
+          message: `User: ${event.message}`,
         });
       }
     } else if (event.event === "changeChannel") {
       broadcast({
-        event: 'message',
+        event: "message",
         channel: event.channel,
-        message: 'User has connected'
+        message: "User has connected",
       });
 
       let channelUsers = channels.get(userObj.channel) || [];
@@ -79,9 +84,9 @@ async function handleWs(ws: WebSocket): Promise<void> {
       users.delete(userId);
 
       broadcast({
-        event: 'message',
+        event: "message",
         channel: userObj.channel,
-        message: 'User has disconnected'
+        message: "User has disconnected",
       });
 
       userObj.channel = event.channel;
@@ -89,8 +94,8 @@ async function handleWs(ws: WebSocket): Promise<void> {
       users.set(userId, userObj);
 
       broadcast({
-        event: 'channelChange',
-        channel: event.channel
+        event: "channelChange",
+        channel: event.channel,
       });
     }
   }
