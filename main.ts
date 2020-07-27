@@ -53,48 +53,45 @@ async function handleWs(ws: WebSocket): Promise<void> {
       break;
     }
 
-    switch (event.event) {
-      case "message":
-        if (event.message) {
-          broadcast({
-            event: 'message',
-            channel: userObj.channel,
-            message: `User: ${event.message}`
-          });
-        }
-        break;
-      case "changeChannel":
-        broadcast({
-          event: 'message',
-          channel: event.channel,
-          message: 'User has connected'
-        });
-
-        let channelUsers = channels.get(userObj.channel) || [];
-        channelUsers = channelUsers.filter((user: any) => user.userId !== userId);
-        channels.set(userObj.channel, channelUsers);
-
-        const newChannelUsers = channels.get(event.channel) || [];
-        newChannelUsers.push(userObj);
-        channels.set(event.channel, newChannelUsers);
-
-        users.delete(userId);
-
+    if (event.event === "message") {
+      if (event.message) {
         broadcast({
           event: 'message',
           channel: userObj.channel,
-          message: 'User has disconnected'
+          message: `User: ${event.message}`
         });
+      }
+    } else if (event.event === "changeChannel") {
+      broadcast({
+        event: 'message',
+        channel: event.channel,
+        message: 'User has connected'
+      });
 
-        userObj.channel = event.channel;
+      let channelUsers = channels.get(userObj.channel) || [];
+      channelUsers = channelUsers.filter((user: any) => user.userId !== userId);
+      channels.set(userObj.channel, channelUsers);
 
-        users.set(userId, userObj);
+      const newChannelUsers = channels.get(event.channel) || [];
+      newChannelUsers.push(userObj);
+      channels.set(event.channel, newChannelUsers);
 
-        broadcast({
-          event: 'channelChange',
-          channel: event.channel
-        });
-        break;
+      users.delete(userId);
+
+      broadcast({
+        event: 'message',
+        channel: userObj.channel,
+        message: 'User has disconnected'
+      });
+
+      userObj.channel = event.channel;
+
+      users.set(userId, userObj);
+
+      broadcast({
+        event: 'channelChange',
+        channel: event.channel
+      });
     }
   }
 }
