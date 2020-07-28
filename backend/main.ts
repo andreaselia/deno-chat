@@ -105,10 +105,7 @@ listenAndServe({ port: 8000 }, async (req) => {
   if (req.method === "GET" && req.url === "/") {
     req.respond({
       status: 200,
-      headers: new Headers({
-        "content-type": "text/html",
-      }),
-      body: await Deno.open("index.html"),
+      body: "Hello, World",
     });
   }
 
@@ -124,4 +121,4 @@ listenAndServe({ port: 8000 }, async (req) => {
   }
 });
 
-console.log("Chat server running: http://localhost:8000");
+console.log("Chat server running: http://localhost/");
