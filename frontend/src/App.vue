@@ -13,10 +13,10 @@ export default {
 
       switch (event.event) {
         case 'message':
-          this.$store.messages = [...this.$store.messages, event.message]
+          this.$store.dispatch('addMessage', event.message)
           break
         case 'channelChange':
-          this.$store.currentChannel = event.channel
+          this.$store.dispatch('joinChannel', event.channel)
           break
       }
     })

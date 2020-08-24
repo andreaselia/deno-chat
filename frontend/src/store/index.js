@@ -23,6 +23,12 @@ export default new Vuex.Store({
     channel (state, channel) {
       state.messages = []
       state.currentChannel = channel
+    },
+    addMessage (state, message) {
+      state.messages = [...state.messages, message]
+    },
+    joinChannel (state, channel) {
+      state.currentChannel = channel
     }
   },
   actions: {
@@ -42,6 +48,12 @@ export default new Vuex.Store({
       }))
 
       commit('channel', channel)
+    },
+    addMessage ({ commit, state }, message) {
+      commit('addMessage', message)
+    },
+    joinChannel ({ commit, state }, channel) {
+      commit('joinChannel', channel)
     }
   },
   getters: {
