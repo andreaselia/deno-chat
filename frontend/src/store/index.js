@@ -46,6 +46,12 @@ export default new Vuex.Store({
       commit('channel')
     }
   },
+  getters: {
+    channels: (state) => state.channels,
+    currentChannel: (state) => state.currentChannel,
+    messages: (state) => state.messages,
+    message: (state) => state.message
+  },
   modules: {
   }
 })

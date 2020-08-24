@@ -47,12 +47,22 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Home',
   data () {
     return {
       ws: null
     }
+  },
+  computed: {
+    ...mapGetters([
+      'channels',
+      'currentChannel',
+      'messages',
+      'message'
+    ])
   },
   methods: {
     submit (e) {
