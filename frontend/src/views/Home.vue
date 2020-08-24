@@ -51,64 +51,15 @@ export default {
   name: 'Home',
   data () {
     return {
-      ws: null,
-      messages: [],
-      message: '',
-      channels: {
-        general: {
-          name: 'General'
-        },
-        random: {
-          name: 'Random'
-        },
-        deno: {
-          name: 'Deno'
-        },
-        typescript: {
-          name: 'TypeScript'
-        },
-        javascript: {
-          name: 'JavaScript'
-        }
-      },
-      currentChannel: 'general'
+      ws: null
     }
-  },
-  created () {
-    if (this.ws) this.ws.close()
-    this.ws = new WebSocket('ws://localhost:8000/ws')
-    this.ws.addEventListener('message', (event) => {
-      event = JSON.parse(event.data)
-
-      switch (event.event) {
-        case 'message':
-          this.messages = [...this.messages, event.message]
-          break
-        case 'channelChange':
-          this.currentChannel = event.channel
-          break
-      }
-    })
   },
   methods: {
     submit (e) {
-      this.ws.send(JSON.stringify({
-        event: 'message',
-        channel: this.currentChannel,
-        message: this.message
-      }))
-
-      this.message = ''
+      this.$store.dispatch('message')
     },
-
     changeChannel (channel) {
-      this.ws.send(JSON.stringify({
-        event: 'changeChannel',
-        channel: channel
-      }))
-
-      this.messages = []
-      this.currentChannel = channel
+      this.$store.dispatch('channel', channel)
     }
   }
 }
