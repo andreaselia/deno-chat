@@ -6,6 +6,8 @@ import '@/assets/css/tailwind.css'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$ws = new WebSocket('ws://localhost:8000/ws')
+
 new Vue({
   router,
   store,

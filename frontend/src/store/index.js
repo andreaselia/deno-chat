@@ -17,33 +17,31 @@ export default new Vuex.Store({
     message: ''
   },
   mutations: {
-    message (state) {
-      //
+    message (state, message) {
+      state.message = ''
     },
     channel (state, channel) {
-      console.log('channel', channel)
+      state.messages = []
+      state.currentChannel = channel
     }
   },
   actions: {
-    message ({ commit }) {
-      this.ws.send(JSON.stringify({
+    message ({ commit, state }) {
+      this._vm.$ws.send(JSON.stringify({
         event: 'message',
-        channel: this.currentChannel,
-        message: this.message
+        channel: state.currentChannel,
+        message: state.message
       }))
 
       commit('message')
     },
-    channel ({ commit }, channel) {
-      this.ws.send(JSON.stringify({
+    channel ({ commit, state }, channel) {
+      this._vm.$ws.send(JSON.stringify({
         event: 'changeChannel',
         channel: channel
       }))
 
-      this.messages = []
-      this.currentChannel = channel
-
-      commit('channel')
+      commit('channel', channel)
     }
   },
   getters: {

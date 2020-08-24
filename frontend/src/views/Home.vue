@@ -16,7 +16,7 @@
         <div class="mt-5">
           <form @submit.prevent="submit" class="flex justify-between items-center">
             <div class="relative rounded-md shadow-sm flex-grow">
-              <input id="email" v-model="message" class="form-input block w-full sm:text-sm sm:leading-5" placeholder="Message">
+              <input id="email" v-model="$store.state.message" class="form-input block w-full sm:text-sm sm:leading-5" placeholder="Message">
             </div>
 
             <span class="mt-3 inline-flex rounded-md shadow-sm sm:mt-0 sm:ml-3 sm:w-auto">
@@ -60,12 +60,11 @@ export default {
     ...mapGetters([
       'channels',
       'currentChannel',
-      'messages',
-      'message'
+      'messages'
     ])
   },
   methods: {
-    submit (e) {
+    submit () {
       this.$store.dispatch('message')
     },
     changeChannel (channel) {
