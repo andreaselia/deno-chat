@@ -14,7 +14,7 @@
         </div>
 
         <div class="mt-5">
-          <form @submit.prevent="submit" class="flex justify-between items-center">
+          <form @submit.prevent="sendMessage" class="flex justify-between items-center">
             <div class="relative rounded-md shadow-sm flex-grow">
               <input id="email" v-model="$store.state.message" class="form-input block w-full sm:text-sm sm:leading-5" placeholder="Message">
             </div>
@@ -64,11 +64,11 @@ export default {
     ])
   },
   methods: {
-    submit () {
-      this.$store.dispatch('message')
+    sendMessage () {
+      this.$store.dispatch('sendMessage')
     },
     changeChannel (channel) {
-      this.$store.dispatch('channel', channel)
+      this.$store.dispatch('changeChannel', channel)
     }
   }
 }
