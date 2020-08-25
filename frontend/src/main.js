@@ -2,11 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import ws from './ws'
 import '@/assets/css/tailwind.css'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$ws = new WebSocket('ws://localhost:8000/ws')
+Vue.use(ws, {
+  store,
+  url: 'ws://localhost:8000/ws'
+})
 
 new Vue({
   router,

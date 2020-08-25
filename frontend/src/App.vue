@@ -8,18 +8,11 @@
 export default {
   name: 'App',
   created () {
-    this.$ws.addEventListener('message', (event) => {
-      event = JSON.parse(event.data)
+    this.$wsConnect()
 
-      switch (event.event) {
-        case 'message':
-          this.$store.dispatch('addMessage', event.message)
-          break
-        case 'channelChange':
-          this.$store.dispatch('joinChannel', event.channel)
-          break
-      }
-    })
+    window.onbeforeunload = () => {
+      this.$wsDisconnect()
+    }
   }
 }
 </script>

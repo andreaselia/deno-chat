@@ -121,4 +121,4 @@ listenAndServe({ port: 8000 }, async (req) => {
   }
 });
 
-console.log("Chat server running: http://localhost/");
+console.log("The chat server is now running!");
