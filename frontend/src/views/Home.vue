@@ -48,11 +48,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
-  data () {
-    return {
-      ws: null
-    }
-  },
   computed: {
     ...mapGetters([
       'channels',

@@ -48,7 +48,6 @@ websocket.install = function (Vue, options) {
   }
 
   Vue.prototype.$wsSend = (data) => {
-    console.log('send', data)
     ws.send(JSON.stringify(data))
   }
 }
