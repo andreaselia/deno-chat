@@ -9,8 +9,17 @@ export const useChatStore = defineStore({
       deno: { name: 'Deno' },
       typescript: { name: 'TypeScript' },
       javascript: { name: 'JavaScript' }
-    }
+    },
+    currentChannel: 'general',
+    messages: []
   }),
   getters: {},
-  actions: {}
+  actions: {
+    changeChannel(channel) {
+      this.currentChannel = channel
+    },
+    sendMessage(message) {
+      this.messages.push(message)
+    }
+  }
 })

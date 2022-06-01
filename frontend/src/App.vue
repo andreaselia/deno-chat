@@ -1,119 +1,61 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <main>
+    <div class="max-w-4xl mx-auto my-12">
+      <div class="text-center py-4">
+        <h3 class="text-md leading-6 font-medium text-gray-900">
+          Deno Chat
+        </h3>
+      </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <div class="sm:grid sm:grid-cols-3 sm:gap-12 sm:px-6 sm:py-5">
+        <div class="flex flex-col">
+          <button
+            v-for="(channel, index) in chat.channels"
+            v-bind:key="index"
+            v-bind:class="[chat.currentChannel === index ? 'text-blue-900 bg-blue-100 hover:bg-blue-100 focus:bg-blue-200' : 'text-blue-600 hover:bg-blue-50 focus:text-blue-900 focus:bg-blue-50']"
+            class="px-3 py-2 text-center text-sm leading-5 font-medium rounded-md hover:text-blue-900 focus:outline-none transition ease-in-out duration-150"
+            type="button"
+            @click="chat.changeChannel(index)"
+          >
+            {{ channel.name }}
+          </button>
+        </div>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+          <div v-for="(message, index) in chat.messages" :key="index">
+            <p class="text-sm leading-5 text-gray-500">{{ message }}</p>
+          </div>
+
+          <form @submit.prevent="sendMessage" class="flex justify-between items-center">
+            <div class="relative rounded-md shadow-sm flex-grow">
+              <input type="text" v-model="message" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm sm:leading-5" placeholder="Message">
+            </div>
+
+            <span class="mt-3 inline-flex rounded-md shadow-sm sm:mt-0 sm:ml-3 sm:w-auto">
+              <button type="submit" class="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150 sm:w-auto sm:text-sm sm:leading-5">
+                Send Message
+              </button>
+            </span>
+          </form>
+        </div>
+      </div>
     </div>
-  </header>
-
-  <RouterView />
+  </main>
 </template>
 
-<style>
-@import '@/assets/base.css';
+<script setup>
+import { ref } from 'vue'
+import { useChatStore } from '@/stores/chat'
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+const chat = useChatStore()
 
-  font-weight: normal;
-}
+const message = ref('')
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
+const sendMessage = () => {
+  if (! message) {
+    return
   }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+  chat.sendMessage(message)
 }
-</style>
+</script>
