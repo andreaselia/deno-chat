@@ -1,11 +1,11 @@
-import { listenAndServe } from "https://deno.land/std/http/server.ts";
+import { listenAndServe } from "https://deno.land/std@0.74.0/http/server.ts";
 import {
   acceptWebSocket,
   acceptable,
   WebSocket,
   isWebSocketCloseEvent,
-} from "https://deno.land/std/ws/mod.ts";
-import { v4 } from "https://deno.land/std/uuid/mod.ts";
+} from "https://deno.land/std@0.74.0/ws/mod.ts";
+import { v4 } from "https://deno.land/std@0.74.0/uuid/mod.ts";
 
 const users = new Map();
 const channels = new Map();
